@@ -1,0 +1,2 @@
+This repository contains a suite of analysis tools designed to process Athena++ simulation data. The primary goal is to test the Slaved-Limit Fickian Closure theory, which predicts how Alfvénic turbulence drives the erosion of transverse density gradients in the solar corona.
+In an idealized, non-expanding Cartesian domain with a straight background magnetic field $\bm{B}_0 = B_0\hat{\bm{x}}$, we investigate how Alfvénic fluctuations $(\delta \bm{v}_\perp, \delta \bm{B}_\perp)$ generate density perturbations $\delta \rho$ that drive a net cross-field transport of mass.
