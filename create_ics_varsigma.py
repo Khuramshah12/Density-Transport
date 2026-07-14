@@ -121,7 +121,7 @@ def yprofile_rms(field):
     return np.sqrt(np.mean(field**2, axis=(0, 2)))
 
 
-def crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho,
+def crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho, p0, B0_sq, BXcc, BYcc, BZcc, beta,
                          sigma_c_target=None, dx=1.0, dy=1.0, dz=1.0,
                          EPS=1e-30):
     """Verify the engineered IC before it is written to disk.
@@ -157,6 +157,12 @@ def crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho,
     r_A = Ev / (Eb + EPS)
     zp_rms = np.sqrt(2.0 * Ep)
 
+    beta_eff_B0 = 2.0 * p0 / B0_sq
+    beta_eff_full = 2.0 * p0 / np.mean(BXcc**2 + BYcc**2 + BZcc**2)
+    print(f"  beta(B0^2)      = {beta_eff_B0:.4g}   (target = {beta})")
+    print(f"  beta(<B^2>)     = {beta_eff_full:.4g}")
+
+
     divv = (np.gradient(dv_x, dx, axis=2)
             + np.gradient(dv_y, dy, axis=1)
             + np.gradient(dv_z, dz, axis=0))
@@ -177,11 +183,10 @@ def crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho,
 # =====================================================================
 #  MAIN GENERATOR
 # =====================================================================
-
 # Example call. Set width to a few cells of the density profile.
 # ics.create_athena_alfvenspec('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110_SQ/', 'ics.h5', [240, 240, 240], [0.,0.,0.], [10.,1.,1.], [48, 48, 40], '/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110/athinput.from_array', time_lim=100.0, dt=1, beta=0.1, amplitude=0.5, spectrum='gaussian', kpeak=(1,10), kwidth=6.0, amp_rho=0.5, sigma_hi=0.95, sigma_lo=0.0, rho_t=1.0, sigma_width=0.05, sigma_use_log=False, do_solenoidal_v=True)
 
-# ics.create_athena_alfvenspec('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110_SQ/', 'ics.h5', [480, 480, 480], [0.,0.,0.], [10.,1.,1.], [96, 96, 80], '/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110_SQ/athinput.from_array',  time_lim=100.0, dt=1, beta=0.1, amplitude=0.5, spectrum='gaussian', kpeak=(1,10), kwidth=6.0,  amp_rho=0.5, rho_alpha=4.0, sigma_hi=0.99, sigma_lo=0.0, rho_t=1.0, sigma_width=0.08, sigma_use_log=False, do_solenoidal_v=True)
+# ics.create_athena_alfvenspec('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A03KP110_SQ240/', 'ics.h5', [240, 240, 240], [0.,0.,0.], [10.,1.,1.], [48, 48, 40], '/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A03KP110_SQ240/athinput.from_array',  time_lim=100.0, dt=1, beta=0.1, amplitude=0.3, spectrum='gaussian', kpeak=(1,10), kwidth=6.0,  amp_rho=0.5, rho_alpha=4.0, sigma_hi=0.99, sigma_lo=0.0, rho_t=1.0, sigma_width=0.08, sigma_use_log=False, do_solenoidal_v=True)
 
 def create_athena_alfvenspec(folder, h5name, n_X, X_min, X_max, meshblock, athinput,
                              time_lim=1, dt=0.2, expand=False, exp_rate=0., beta=1.0,
@@ -242,7 +247,12 @@ def create_athena_alfvenspec(folder, h5name, n_X, X_min, X_max, meshblock, athin
     # Background parameters
     # -------------------------------------------------
     B0_x, B0_y, B0_z = 1.0, 0.0, 0.0
-    p0 = 0.5
+    # Gas pressure from target beta: beta = 2 P_th / B0^2  (mu_0 = 1 in code units)
+    B0_sq = B0_x**2 + B0_y**2 + B0_z**2
+    p0 = 0.5 * beta * B0_sq
+    print(f"  target beta = {beta}   ->   p0 = {p0:.6g}   (B0^2 = {B0_sq:.4g})")
+    
+    #p0 = 0.5
     gamma = 5.0 / 3.0
     rho0_mean = 1.0
 
@@ -389,7 +399,7 @@ def create_athena_alfvenspec(folder, h5name, n_X, X_min, X_max, meshblock, athin
     # -------------------------------------------------
     # Diagnostics (verify sigma_c(y), r_A(y), z+_rms(y), div(v))
     # -------------------------------------------------
-    crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho,
+    crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho, p0, B0_sq, BXcc, BYcc, BZcc, beta,
                          sigma_c_target=sigma_c_3d, dx=dx, dy=dy, dz=dz, EPS=EPS)
 
     # -------------------------------------------------
@@ -436,7 +446,13 @@ def create_athena_alfvenspec(folder, h5name, n_X, X_min, X_max, meshblock, athin
     # -------------------------------------------------
     B2 = BXcc**2 + BYcc**2 + BZcc**2
     mean_rho_on_B2 = box_avg(rho / B2)
-    iso_sound_speed = np.sqrt(0.5 * beta / mean_rho_on_B2)
+
+    # Adiabatic sound speed for athinput bookkeeping only (solver derives it
+    # from primitives at runtime). c_s^2 = gamma * p / rho.
+    c_s_squared_mean = box_avg(gamma * p0 / (rho + EPS))
+    iso_sound_speed = np.sqrt(c_s_squared_mean)
+
+    #iso_sound_speed = np.sqrt(0.5 * beta / mean_rho_on_B2)
 
     ath_copy = helpers.edit_athinput(
         athinput, folder,
