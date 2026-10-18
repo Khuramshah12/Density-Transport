@@ -210,7 +210,7 @@ assert len(ACTIVE_GIDS_2x4) == 8, \
 X_DISS       = 40
 NY_GRID      = 500
 FILE_PATTERN = 'from_array.out.*.athdf'
-OUTPUT_DIR   = BASE + 'unified_diagnostics_results_v12_ChatGPT/'
+OUTPUT_DIR   = BASE + 'unified_diagnostics_results/'
 T_MAX_PLOT   = 50.0
 
 # Physical constants
