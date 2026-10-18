@@ -1,3 +1,4 @@
+#Mainly written by Zade Johnston, and I added some extra bits needed for my work
 import os
 from shutil import copy
 
@@ -8,8 +9,7 @@ from scipy.interpolate import RegularGridInterpolator as rgi
 
 from athena_read import athinput as athinput_dict
  
-ATHENA_BIN_PATH = '/home/abbkh891/athena_expanding_zade/bin/athena_ics'
-#'/nesi/nobackup/uoo02637/khurram/PhD_2024/from_array24/'
+ATHENA_BIN_PATH = '/home/athena_expanding/bin/athena_ics'
  
 #--- REINTERPOLATION FUNCTIONS ---#
 
