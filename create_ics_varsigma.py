@@ -180,14 +180,6 @@ def crosshel_diagnostics(dv_x, dv_y, dv_z, dB_x, dB_y, dB_z, rho, p0, B0_sq, BXc
     return dict(y_sigma_c=sigma_c_meas, y_r_A=r_A, y_zp_rms=zp_rms)
 
 
-# =====================================================================
-#  MAIN GENERATOR
-# =====================================================================
-# Example call. Set width to a few cells of the density profile.
-# ics.create_athena_alfvenspec('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110_SQ/', 'ics.h5', [240, 240, 240], [0.,0.,0.], [10.,1.,1.], [48, 48, 40], '/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A05KP110/athinput.from_array', time_lim=100.0, dt=1, beta=0.1, amplitude=0.5, spectrum='gaussian', kpeak=(1,10), kwidth=6.0, amp_rho=0.5, sigma_hi=0.95, sigma_lo=0.0, rho_t=1.0, sigma_width=0.05, sigma_use_log=False, do_solenoidal_v=True)
-
-# ics.create_athena_alfvenspec('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A03KP110_SQ240/', 'ics.h5', [240, 240, 240], [0.,0.,0.], [10.,1.,1.], [48, 48, 40], '/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/density_transport/Variable_Sigma/rho05B01A03KP110_SQ240/athinput.from_array',  time_lim=100.0, dt=1, beta=0.1, amplitude=0.3, spectrum='gaussian', kpeak=(1,10), kwidth=6.0,  amp_rho=0.5, rho_alpha=4.0, sigma_hi=0.99, sigma_lo=0.0, rho_t=1.0, sigma_width=0.08, sigma_use_log=False, do_solenoidal_v=True)
-
 def create_athena_alfvenspec(folder, h5name, n_X, X_min, X_max, meshblock, athinput,
                              time_lim=1, dt=0.2, expand=False, exp_rate=0., beta=1.0,
                              perp_energy=0.5, amplitude=None,
