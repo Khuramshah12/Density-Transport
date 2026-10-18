@@ -22,15 +22,6 @@ def box_avg(x, reshape=0):
         avg = avg.reshape(*shape, 1, 1, 1)
     return avg
 
-
-# =============================================================================
-#ics.create_athena_alfvenspec('/nesi/nobackup/uoo02637/khurram/density_transport/500_k15/Sharp_grad/cubic_rho0_5kp15B01A02/', 'ics.h5', [500, 500, 500], [0.0, 0.0, 0.0], [1.0, 1.0, 1.0], [100, 100, 125], '/nesi/nobackup/uoo02637/khurram/density_transport/500_k15/Sharp_grad/cubic_rho0_5kp15B01A02/athinput.from_array', time_lim=100.0, dt=1, expand=False, exp_rate=0.0, beta=0.1, perp_energy=0.5, amplitude=0.2, spectrum='gaussian', expo=-5/3, expo_prl=-2., kpeak=(1,5), kwidth=12.0, amp_rho = 0.5, alpha_steepness=10.0, do_truncation=False, n_cutoff=None, do_mode_test=False)
-
-#ics.create_athena_alfvenspec('/nesi/nobackup/uoo02637/khurram/density_transport/500_k15/Sharp_grad/rho0_9_kp15B01A02/', 'ics.h5', [250, 500, 500], [0.0, 0.0, 0.0], [5.0, 1.0, 1.0], [50, 125, 100], '/nesi/nobackup/uoo02637/khurram/density_transport/500_k15/Sharp_grad/rho0_9_kp15B01A02/athinput.from_array', time_lim=100.0, dt=1, expand=False, exp_rate=0.0, beta=0.1, perp_energy=0.5, amplitude=0.2, spectrum='gaussian', expo=-5/3, expo_prl=-2., kpeak=(1,5), kwidth=12.0, amp_rho = 0.9, alpha_steepness=10.0, do_truncation=False, n_cutoff=None, do_mode_test=False)
-# =============================================================================
-#  PHYSICS HELPERS  (tanh profile, scale matching, critical balance)
-# =============================================================================
-
 def kperp_max_tanh(amp_rho, alpha_steepness, kappa_y, Ly):
     """Maximum local perpendicular inverse scale length of the tanh density
     profile
