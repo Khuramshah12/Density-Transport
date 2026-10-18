@@ -122,7 +122,7 @@ except ImportError:                                     # SciPy < 1.6
 
 warnings.filterwarnings('ignore')
 
-sys.path.insert(1, '/nesi/nobackup/uoo02637/khurram/density_transport/'
+sys.path.insert(1, '/khurram/density_transport/'
                    'Initial Conditions/')
 import athena_read as aread                             # noqa: E402
 
@@ -131,16 +131,15 @@ import athena_read as aread                             # noqa: E402
 #  SECTION 1 — CONFIGURATION
 # =============================================================================
 
-BASE = ('/home/abbkh891/00_nesi_projects/uoo02637_nobackup/khurram/'
-        'density_transport/500_k15/')
+BASE = ('/khurram/density_transport/500_k15/')
 
-OUTPUT_DIR = BASE + 'unified_diagnostics_results_v13_master/'
+OUTPUT_DIR = BASE + 'unified_diagnostics_results/'
 
 REDUCED_NPZ  = 'reduced_data.npz'
 REDUCED_JSON = 'reduced_meta.json'
 SPECTRA_NPZ  = 'spectra_data.npz'
 SPECTRA_JSON = 'spectra_meta.json'
-REPORT_TXT   = 'unified_diagnostics_report_v13.txt'
+REPORT_TXT   = 'unified_diagnostics_report.txt'
 
 # Numerical constants -----------------------------------------------------------
 X_DISS       = 40          # PLM dissipation calibration (see module docstring)
